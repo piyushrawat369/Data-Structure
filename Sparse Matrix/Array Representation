@@ -1,0 +1,52 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int m,n, count=0, sp[10][3], k;
+    cout<<"enter the number of rows: ";
+    cin>>m;
+    cout<<"enter the number of columns: ";
+    cin>>n;
+    int arr[m][n];
+    for(int i=0; i<m; i++){
+        for(int j=0; j<n; j++){
+            cout<<"enter the number: ";
+            cin>>arr[i][j];
+        }
+    }
+    for(int i=0; i<m; i++){
+        for(int j=0; j<n; j++){
+            cout<<arr[i][j]<<endl;
+        }
+    }
+    for(int i=0; i<m; i++){
+        for(int j=0; j<n; j++){
+            if(arr[i][j] != 0){
+                count+=1;
+            }
+        }
+    }
+    sp[0][0] = m;
+    sp[0][1] = n;
+    sp[0][2] = count;
+    k = 1;
+    for(int i=1; i<m; i++){
+        for(int j=0; j<n; j++){
+            if(arr[i][j] != 0){
+                sp[k][0] = i;
+                sp[k][1] = j;
+                sp[k][2] = arr[i][j];
+                k++;
+            }
+        }
+    }
+    for(int i=0;i<=count;i++)
+    {
+        for(int j=0;j<3;j++){
+            cout<<" "<<sp[i][j];
+            cout<<endl;
+        }
+    }
+    return 0;
+}

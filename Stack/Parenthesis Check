@@ -1,0 +1,45 @@
+#include<iostream>
+using namespace std;
+
+static int top = -1;
+char stack[25];
+
+void push(char no){
+    if(top == 24){
+        cout<<"Stack Overflow!!";
+    }
+    else{
+        top = top +1;
+        stack[top] = no;
+    }
+}
+void pop(char ch){
+    if(top == -1){
+        cout<<"\n Stack Underflow!!";
+        cout<<"\n Invalid Expression!!";
+        exit(0);
+    }
+    if(ch == ')' && stack[top] == '(' || ch == ']' && stack[top] == '[' || ch == '}' && stack[top] == '{'){
+        --top;
+    }
+}
+int main(){
+    string str;
+    cout<<"\n Enter the Expression: ";
+    cin>>str;
+    for(int i =0; str[i] != '\0'; i++){
+        if(str[i] == '(' || str[i] == '[' || str[i] == '{'){
+            push(str[i]);
+        }
+        if(str[i] == ')' || str[i] == ']' || str[i] == '}'){
+            pop(str[i]);
+        }
+    }
+    if(top == -1){
+        cout<<"\n Expression is Correct!!";
+    }
+    else{
+        cout<<"\n Inavlid Expression!!";
+    }
+    return 0;
+}

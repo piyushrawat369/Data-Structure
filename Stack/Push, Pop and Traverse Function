@@ -1,0 +1,60 @@
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+static int *s, size, top = -1;
+void push(int no){
+    if (top == size-1){
+        cout<<"\nStack Overflow!!";
+    }
+    else{
+        top = top+1;
+        *(s+top) = no;
+    }
+}
+void pop(){
+    if(top == -1){
+        cout<<"\nStack Underflow!!";
+    }
+    else{
+        cout<<*(s+top)<<" is the Deleted element";
+        --top; 
+    }
+}
+void traverse(){
+    if(top == -1){
+        cout<<"\n Stack is empty";
+    }
+    else{
+        for(int i=top; i>=0; i--){
+            cout<<*(s+i)<<" ";
+        }
+    }
+}
+
+int main(){
+    int opt;
+    cout<<"Enter the size of th stack: ";
+    cin>>size;
+    int *s = new int[size];
+    // s= (int *)malloc(size * sizeof(int));
+    cout<<"\n Enter the choice";
+    cout<<"\n 1.PUSH  2.POP  3.DISPLAY  0.EXIT";
+    cin>>opt;
+    if(opt == 1){
+        cout<<"\n Enter the number to insert";
+        cin>>opt;
+        push(opt);
+    }
+    else if(opt == 2){
+        pop();
+    }
+    else if(opt == 3){
+        traverse();
+    }
+    else if(opt == 0){
+        exit(0);
+    }
+    else{
+        cout<<"\n INVALID CHOICE";
+    }
+}

@@ -1,0 +1,147 @@
+#include<iostream>
+using namespace std;
+
+struct node{
+    node* prev;
+    int data;
+    node* next;
+};
+
+// Inserting
+node *add_at_end(node *head, int data){
+    node *ptr = new node();
+    node *temp = head;
+    while(temp->next != NULL){
+        temp = temp->next;
+    }
+    ptr->prev = NULL;
+    ptr->data = data;
+    ptr->next = NULL;
+    
+    ptr->prev = temp;
+    temp->next = ptr;
+    return head;
+}
+
+node *add_at_beg(node *head, int data){
+    node *ptr = new node();
+    ptr->prev = NULL;
+    ptr->data = data;
+    ptr->next = NULL;
+    ptr->next = head;
+    head = ptr;
+    return head;
+}
+
+void add_at_pos(node *head, int data, int pos){
+    node *temp = new node();
+    node *ptr = head;
+    temp->prev = NULL;
+    temp->data = data;
+    temp->next = NULL;
+    pos--;
+    while(pos != 1){
+        ptr = ptr->next;
+        pos--;
+    }
+    temp->prev = ptr;
+    temp->next = ptr->next;
+    ptr->next->prev = temp;
+    ptr->next = temp;
+}
+
+// Deletion
+void del_from_end(node *head){
+    node *temp, *ptr = head;
+    while(ptr->next->next != NULL){
+        ptr = ptr->next;
+    }
+    temp = ptr->next;
+    ptr->next = NULL;
+    free(temp);
+}
+
+node *del_from_beg(node *head){
+    node *temp;
+    temp = head;
+    head = head->next;
+    head->prev = NULL;
+    free(temp);
+    return head;
+}
+
+void del_from_pos(node *head, int pos){
+    node *temp, *ptr;
+    ptr = head;
+    
+    while(pos != 1){
+        ptr = ptr->next;
+        pos--;
+    }
+    if(ptr->next == NULL){
+        ptr->prev->next = NULL;
+    }
+    
+    else{
+        ptr->prev->next = ptr->next;
+        ptr->next->prev = ptr->prev;
+        free(ptr);
+    }
+}
+
+node *reverse(node *head){
+    node *temp = NULL;
+    node *current = head;
+     
+    while (current != NULL)
+    {
+        temp = current->prev;
+        current->prev = current->next;
+        current->next = temp;            
+        current = current->prev;
+    }
+     
+    /* Before changing the head, check for the cases like empty
+        list and list with only one node */
+    if(temp != NULL )
+        head = temp->prev;
+    
+    return head;
+}
+
+void print(node *head){
+    node *temp = head;
+    while(temp != NULL){
+        cout<<temp->data<<" ";
+        temp = temp->next;
+    }
+}
+
+int main(){
+    node *head = new node();
+    head->prev = NULL;
+    head->data = 10;
+    head->next = NULL;
+    
+
+    add_at_end(head, 20);
+    add_at_end(head, 30);
+
+    head = add_at_beg(head, 0);
+    head = add_at_beg(head, -10);
+
+    add_at_pos(head, 80, 2);
+    add_at_pos(head, 70, 4);
+ 
+    //del_from_end(head);
+    //del_from_end(head);
+
+    //head = del_from_beg(head);
+
+    //del_from_pos(head, 2);
+    
+    head = reverse(head);
+
+    print(head);
+    return 0;
+}

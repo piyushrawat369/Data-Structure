@@ -1,0 +1,130 @@
+#include<iostream>
+using namespace std;
+
+struct node{
+    int data;
+    float coeff;
+    int expo;
+    node *next;
+    
+};
+
+node *insert(node *head, float co, int ex){
+    node *ptr;
+    node *temp = new node();
+    temp->coeff = co;
+    temp->expo = ex;
+    temp->next = NULL;
+
+    if(head == NULL || ex > head->expo){
+        temp->next = head;
+        head = temp;
+    }
+    else{
+        ptr = head;
+        while(ptr->next != NULL && ptr->next->expo > ex){
+            ptr = ptr->next;
+        }
+        temp->next = ptr->next;
+        ptr->next = temp;
+    }
+    return head;
+}
+
+node *create(node *head){
+    int n;
+    float co;
+    int ex;
+
+    cout<<"Enter the number of terms: ";
+    cin>>n;
+    for(int i=0; i<n; i++){
+        cout<<"Enter the coeff for term "<<i+1<<": ";
+        cin>>co;
+        cout<<"Enter the exponent for term "<<i+1<<": ";
+        cin>>ex;
+        head = insert(head, co, ex);
+    }
+    return head;
+}
+
+void print(node *head){
+    if(head == NULL){
+        cout<<"No Polynomial...";
+    }
+    else{
+        node *ptr = head;
+        while(ptr != NULL){
+            cout<<ptr->coeff<<"x^"<<ptr->expo;
+            ptr=ptr->next;
+            if(ptr != NULL){
+                cout<<" + ";
+            }
+            else{
+                cout<<"\n";
+            }
+        }
+    }
+}
+
+void poly_add(node *head1, node *head2){
+    node *ptr1 = head1;
+    node *ptr2 = head2;
+    node *head3 = NULL;
+    
+    while(ptr1 != NULL && ptr2 != NULL){
+        if(ptr1->expo == ptr2->expo){
+            head3 = insert(head3, ptr1->coeff + ptr2->coeff, ptr1->expo);
+            ptr1 = ptr1->next;
+            ptr2 = ptr2->next;
+        }
+        else if(ptr1->expo > ptr2->expo){
+            head3 = insert(head3, ptr1->coeff, ptr1->expo);
+            ptr1 = ptr1->next;
+        }
+        else if(ptr1->expo < ptr2->expo){
+            head3 = insert(head3, ptr2->coeff, ptr2->expo);
+            ptr2 = ptr2->next;
+        }
+    }
+    while(ptr1 != NULL){
+        head3 = insert(head3, ptr1->coeff, ptr1->expo);
+        ptr1 = ptr1->next;
+    }
+    while(ptr2 != NULL){
+        head3 = insert(head3, ptr2->coeff, ptr2->expo);
+        ptr2 = ptr2->next;
+    }
+    cout<<"Added Polynomial is: ";
+    print(head3);
+}
+
+void poly_mult(node *head1, node *head2){
+    node *ptr1 = head1;
+    node *ptr2 = head2;
+    node *head3 = NULL;
+    while(ptr1 != NULL){
+        while(ptr2 != NULL){
+            int coeff, expo;
+            coeff = ptr1->coeff * ptr2->coeff;
+            expo = ptr1->expo + ptr2->expo;
+            head3 = insert(head3, coeff, expo);
+            ptr2 = ptr2->next;
+        }
+        ptr2 = head2;
+        ptr1 = ptr1->next;
+    }
+    print(head3);
+}
+
+int main(){
+    node *head1 = NULL;
+    node *head2 = NULL;
+    cout<<"Enter the first polynomial: \n";
+    head1 = create(head1);
+    cout<<"Enter the second plynomial: \n";
+    head2 = create(head2);
+    //poly_add(head1, head2);
+    poly_mult(head1, head2);
+    return 0;
+}

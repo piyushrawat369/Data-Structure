@@ -1,0 +1,153 @@
+#include<iostream>
+using namespace std;
+
+struct node{
+    int data;
+    node *next;
+};
+
+// Inserting
+node *add_at_empty(node *last, int data){
+    if(last != NULL){
+        return last;
+    }
+    node *temp = new node();
+    temp->data = data;
+    last = temp;
+
+    last->next = last;
+    return last;
+}
+
+node *add_at_end(node *last, int data){
+    if(last == NULL){
+        return add_at_empty(last, data);
+    }
+
+    node *temp = new node();
+    temp->data = data;
+    temp->next = last->next;
+    last->next = temp;
+    last = temp;
+
+    return last;
+}
+
+node *add_at_beg(node *last, int data){
+    if(last == NULL){
+        return add_at_empty(last, data);
+    }
+    node *temp = new node();
+    temp->data = data;
+    temp->next = last->next;
+    last->next = temp;
+
+    return last;
+}
+
+node *add_at_pos(node *last, int data, int pos){
+    if(last == NULL){
+        return add_at_empty(last, data);
+    }
+    node *temp = new node();
+    node *ptr = last;
+    temp->data = data;
+    temp->next = NULL;
+    while(pos != 1){
+        ptr = ptr->next;
+        pos--;
+    }
+    temp->next = ptr->next;
+    ptr->next = temp;
+    return last;
+}
+
+// Deleting
+node *del_from_end(node *last){
+    node *temp, *ptr = last;
+    do{
+        ptr = ptr->next;
+    }while(ptr->next != last);
+    ptr->next = last->next;
+    temp = last;
+    last = ptr;
+    free(temp);
+    return last;
+}
+
+node *del_from_beg(node *last){
+    node *temp;
+    temp = last->next;
+    last->next = last->next->next;
+    free(temp);
+    return last;
+}
+
+node *del_from_pos(node *last, int pos){
+    node *temp, *ptr = last;
+    while(pos != 1){
+        ptr = ptr->next;
+        pos--;
+    }
+    temp = ptr->next;
+    ptr->next = ptr->next->next;
+    free(temp);
+    return last;
+}
+
+node *reverse(node *head){
+    node *prev = head; 
+    node *curr = head->next;
+    node *ptr = head;
+    while(curr != head)
+    {
+        ptr = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = ptr;
+    }
+    head->next = prev;
+    return head;
+}
+
+void print(node *last){
+    node *ptr;
+    if(last == NULL){
+        cout<<"List is empty..";
+    }
+    else{
+        ptr = last->next;
+        do{
+            cout<<ptr->data<<" ";
+            ptr = ptr->next;
+        }while(ptr != last->next);
+    }
+}
+
+int main(){
+    node *last = NULL;  
+
+    last = add_at_empty(last, 10);
+    last = add_at_end(last, 20); 
+    last = add_at_end(last, 30); 
+
+    last = add_at_beg(last, 0);
+    last = add_at_beg(last, -10);
+
+    last = add_at_pos(last, 80, 2);
+    last = add_at_pos(last, 80, 5);
+
+    //last = del_from_end(last);
+    //last = del_from_end(last);
+
+    //last = del_from_beg(last);
+    //last = del_from_beg(last);
+
+    //last = del_from_pos(last, 4);
+
+    last = reverse(last->next);
+
+    print(last);
+
+    return 0;
+}

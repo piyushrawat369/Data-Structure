@@ -1,0 +1,131 @@
+#include<iostream>
+using namespace std;
+
+struct node{
+    int data;
+    node *next;
+};
+
+node *add_node(node *head, int val){
+    node *temp = new node();
+    temp->data = val;
+    temp->next = NULL;
+    temp->next = head;
+    head = temp;
+    return head;
+}
+
+node *createLL(node *head, int n){
+    while(n != 0){
+        head = add_node(head, n%10);
+        n = n/10;
+    }
+    return head;
+}
+
+node *reverseLL(node *head){
+    if(head == NULL){
+        return head;
+    }
+    node *current = head;
+    node *next = NULL;
+    node *prev = NULL;
+    while(current != NULL){
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    head = prev;
+    return head;
+}
+
+node *push(node *head, int val){
+    node *ptr = new node();
+    ptr->data = val;
+    ptr->next = head;
+    head = ptr;
+    return head;
+}
+
+node *add(node *head1, node *head2){
+    if(head1->data == 0){
+        return head2;
+    }
+    if(head2->data == 0){
+        return head1;
+    }
+    node *ptr1 = head1;
+    node *ptr2 = head2;
+    node *head3 = NULL;
+    int carry = 0, sum;
+    while(ptr1 || ptr2){
+        sum =0;
+        if(ptr1){
+            sum += ptr1->data;
+        }
+        if(ptr2){
+            sum += ptr2->data;
+        }
+        sum += carry;
+        carry = sum/10;
+        sum = sum%10;
+        
+        head3 = push(head3, sum);
+        if(ptr1){
+            ptr1 = ptr1->next;
+        }
+        if(ptr2){
+            ptr2 = ptr2->next;
+        }
+    }
+    if(carry){
+        head3 = push(head3, carry);
+    }
+    return head3;
+}
+
+void backToNum(node *head){
+    node *temp = head;
+    cout<<"Result: ";
+    while(temp){
+        cout<<temp->data;
+        temp = temp->next;
+    }
+}
+
+void print(node *head){
+    node *ptr = head;
+    if(ptr == NULL){
+        cout<<"No number..";
+    }
+    else{
+        while(ptr != NULL){
+            cout<<ptr->data<<" ";
+            ptr = ptr->next;
+        }
+    }
+}
+
+int main(){
+    int a, b;
+    cout<<"Enter the two numbers: ";
+    cin>>a>>b;
+    
+    //cout<<"Linked list representation of the first number: \n";
+    node *head1 = NULL;
+    head1 = createLL(head1, a);
+    head1 = reverseLL(head1);
+
+    //cout<<"\nLinked list representation of the second number: \n";
+    node *head2 = NULL;
+    head2 = createLL(head2, b);
+    head2 = reverseLL(head2);
+
+    node *head3 = NULL;
+    head3 = add(head1, head2);
+
+    backToNum(head3);
+
+    return 0;
+}

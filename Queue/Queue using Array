@@ -1,0 +1,63 @@
+#include<iostream>
+using namespace std;
+
+struct queue{
+    int size;
+    int front;       // index pointer
+    int rear;
+    int *Q;          // for dynamic array
+};
+
+void create(queue *q, int size){
+    q->size = size;
+    q->front = q->rear = -1;
+    q->Q = new int(q->size);
+}
+
+void  enqueue(queue *q, int x){
+    if(q->rear == q->size-1){
+        cout<<"Queue Overflow..";
+    }
+    else{
+        q->rear++;
+        q->Q[q->rear] = x;
+    }
+}
+
+int dequeue(queue *q){
+    int x = -1;         // for storing the deleted value
+    if(q->front == q->rear){
+        cout<<"Queue Underflow..";
+    }
+    else{
+        q->front++;
+        x = q->Q[q->front];
+    }
+    return x;
+}
+
+void display(queue q){
+    int i;
+    for(i =q.front+1; i <= q.rear; i++){
+        cout<<q.Q[i]<<" ";
+    }
+    cout<<"\n";
+}
+
+int main(){
+    queue q;
+    cout<<"Enter the size: ";
+    cin>>q.size;
+
+    create(&q, q.size);
+    
+    enqueue(&q, 10);
+    enqueue(&q, 20);
+    enqueue(&q, 30);
+
+    display(q);
+
+    cout<<dequeue(&q);
+
+    return 0;
+}

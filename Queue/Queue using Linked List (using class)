@@ -1,0 +1,104 @@
+#include<iostream>
+using namespace std;
+
+class node{
+    public:
+        int data;
+        node *next;
+};
+
+class queue{
+    private:
+        node *front;
+        node *rear;
+    public:
+        queue();
+        ~queue();
+        void enqueue(int x);
+        int dequeue();
+        bool isEmpty();
+        void display();
+};
+queue::queue(){
+    front = nullptr;
+    rear = nullptr;
+}
+queue::~queue(){
+    node *ptr = front;
+    while(ptr){
+        front = front->next;
+        delete ptr;
+        ptr = front;
+    }
+}
+
+bool queue::isEmpty(){
+    if(front == nullptr){
+        return true;
+    }
+    return false;
+}
+
+void queue::enqueue(int x){
+    node *ptr = new node(); 
+    if(ptr == nullptr){
+        cout<<"Queue is full..";
+    }
+    else{
+        ptr->data = x;
+        ptr->next = NULL;
+        if(front == nullptr){
+            front = ptr;
+            rear = ptr;
+        }
+        else{
+            rear->next = ptr;
+            rear = ptr;
+        }
+    }
+}
+int queue::dequeue(){
+    int x = -1;
+    node *ptr;
+    if(isEmpty()){
+        cout<<"Queue Undeflow.."<<endl;
+    }
+    else{
+        ptr = front;
+        front = front->next;
+        x = ptr->data;
+        delete ptr;
+    }
+    return x;
+}
+
+void queue::display(){
+    node *ptr = front;
+    while (ptr){
+        cout << ptr->data << flush;
+        ptr = ptr->next;
+        if (ptr != nullptr){
+            cout << " <- " << flush;
+        }
+    }
+    cout << endl;
+}
+
+int main(){
+    int A[] = {1, 3, 5, 7, 9};
+ 
+    queue q;
+ 
+    for (int i=0; i<sizeof(A)/sizeof(A[0]); i++){
+        q.enqueue(A[i]);
+    }
+ 
+    q.display();
+ 
+    for (int i=0; i<sizeof(A)/sizeof(A[0]); i++){
+        q.dequeue();
+    }
+    q.dequeue();
+ 
+    return 0;
+}

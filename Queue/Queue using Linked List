@@ -1,0 +1,64 @@
+#include<iostream>
+using namespace std;
+
+struct queue{
+    int data;
+    queue *next;
+}*rear = NULL, *front = NULL;
+
+void enqueue(int data){
+    queue *t = new queue();
+    t->data = data;
+    t->next = NULL;
+    if(t == NULL){
+        cout<<"Queue is Full..\n";
+    }
+    else{
+        if( front == NULL ){
+            front = rear = t;
+        }
+        else{
+            rear->next = t;
+            rear = t;
+        }
+
+    }
+}
+int dequeue(){
+    int x = -1;
+    queue *t;
+    if(front == NULL){
+        cout<<"Queue is empty..\n";
+    }
+    else{
+        x = front->data;
+        t = front;
+        front = front->next;
+        free(t);
+    }
+    return x;
+}
+
+void display(){
+    queue *t = front;
+    while(t){
+        cout<<t->data<<" ";
+        t= t->next;
+    }
+    cout<<"\n";
+}
+
+int main(){
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+    enqueue(40);
+    enqueue(50);
+
+    display();
+
+    cout<<dequeue()<<endl;
+    display();
+
+    return 0;
+}

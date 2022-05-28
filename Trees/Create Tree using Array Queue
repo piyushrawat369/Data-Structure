@@ -1,0 +1,160 @@
+#include<iostream>
+using namespace std;
+
+class node{
+    public:
+        node *lchild;
+        int data;
+        node *rchild;
+};
+
+class queue{
+    private:
+        int front;
+        int rear;
+        int size;
+        node **Q;
+    
+    public:
+        queue(int size);
+        ~queue();
+        bool isEmpty();
+        bool isFull();
+        void enqueue(node *x);
+        node *dequeue();
+};
+
+queue::queue(int size){
+    this->size = size;
+    front = -1;
+    rear = -1;
+    Q = new node*[size];
+}
+
+queue::~queue(){
+    delete [] Q;
+}
+
+bool queue::isEmpty(){
+    if(front == rear){
+        return true;
+    }
+    return false;
+}
+
+bool queue::isFull(){
+    if(rear == size-1){
+        return true;
+    }
+    return false;
+}
+
+void queue::enqueue(node *x){
+    if(isFull()){
+        cout<<"Queue Overloaded.."<<endl;
+    }
+    else{
+        rear++;
+        Q[rear] = x;
+    }
+}
+
+node *queue::dequeue(){
+    node *x = nullptr;
+    if(isEmpty()){
+        cout<<"Queue Underflow.."<<endl;
+    }
+    else{
+        front++;
+        x = Q[front];
+    }
+    return x;
+}
+
+node *root = new node();
+
+void createTree(){
+    node *p;
+    node *t;
+    int x;
+    queue q(10);
+    
+    cout<<"Enter the root value: ";
+    cin>>x;
+    root->data = x;
+    root->lchild = NULL;
+    root->rchild = NULL;
+    q.enqueue(root);
+
+    while(!q.isEmpty()){
+        p = q.dequeue();
+        
+        cout<<"Enter left child value of "<<p->data<<" : ";
+        cin>>x;
+
+        if(x != -1){
+            t = new node();
+            t->data = x;
+            t->lchild = NULL;
+            t->rchild = NULL;
+            p->lchild = t;
+            q.enqueue(t);
+        }
+
+        cout<<"Enter right child value of "<<p->data<<" : ";
+        cin>>x;
+
+        if(x != -1){
+            t = new node();
+            t->data = x;
+            t->lchild = NULL;
+            t->rchild = NULL;
+            p->rchild = t;
+            q.enqueue(t);
+
+        }
+    }
+}
+
+void preorder(node *p){
+    if(p){
+        cout<<p->data<<" , "<<flush;
+        preorder(p->lchild);
+        preorder(p->rchild);
+    }
+}
+
+void postorder(node *p){
+    if(p){
+        postorder(p->lchild);
+        postorder(p->rchild);
+        cout<<p->data<<" , "<<flush;
+    }
+}
+
+void inorder(node *p){
+    if(p){
+        inorder(p->lchild);
+        cout<<p->data<<" , "<<flush;
+        inorder(p->rchild);
+    }
+}
+
+int main(){
+    createTree();
+    
+    cout<<"Preorder: ";
+    preorder(root);
+    cout<<endl;
+
+    cout<<"Postorder: ";
+    postorder(root);
+    cout<<endl;
+
+    cout<<"Inorder: ";
+    inorder(root);
+    cout<<endl;
+
+
+    return 0;
+}

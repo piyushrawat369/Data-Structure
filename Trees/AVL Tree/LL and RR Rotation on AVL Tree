@@ -1,0 +1,157 @@
+#include<iostream>
+using namespace std;
+
+struct node{
+    public:
+        node* lchild;
+        int data;
+        node* rchild;
+        int height;
+};
+
+struct AVL{
+    public:
+        node* root;
+        AVL(){ root = nullptr; }
+
+        // Helper method for inserting
+        int NodeHeight(node* p);
+        int BalanceFactor(node* p);
+        node* LLRotation(node* p);
+        node* RRRotation(node* p);
+        node* LRRotation(node* p);
+        node* RLRotation(node* p);
+
+        // Insert
+        node* rInsert(node* p, int key);
+
+        // Traversal
+        void Inorder(node* p);
+        void Inorder(){ Inorder(root); }
+        node* getRoot(){ return root; }
+};
+
+int AVL::NodeHeight(node* p){
+    int hl;
+    int hr;
+
+    hl = (p && p->lchild)? p->lchild->height : 0;
+    hr = (p && p->rchild)? p->rchild->height : 0;
+
+    return hl > hr? hl+1: hr+1; 
+}
+
+int AVL::BalanceFactor(node* p){
+    int hl;
+    int hr;
+
+    hl = (p && p->lchild)? p->lchild->height : 0;
+    hr = (p && p->rchild)? p->rchild->height : 0;
+    
+    return hl - hr;
+}
+
+node* AVL::LLRotation(node* p){
+    node* pl = p->lchild;
+    node* plr = pl->rchild;
+
+    pl->rchild = p;
+    p->lchild = plr;
+
+    // Update height
+    p->height = NodeHeight(p);
+    pl->height = NodeHeight(pl);
+
+    // Update root
+    if(root == p){
+        root = pl;
+    }
+    return pl;
+}
+
+node* AVL::RRRotation(node* p){
+    node* pr = p->rchild;
+    node* prl = pr->lchild;
+
+    pr->lchild = p;
+    p->rchild = prl;
+
+    p->height = NodeHeight(p);
+    pr->height = NodeHeight(pr);
+
+    if(root == p){
+        root = pr;
+    }
+    return pr;
+}
+
+node* AVL::LRRotation(node* p){
+    return nullptr;
+}
+
+node* AVL::RLRotation(node* p){
+    return nullptr;
+}
+
+node* AVL::rInsert(node* p, int key){
+    node* t;
+    if(p == nullptr){
+        t = new node();
+        t->data = key;
+        t->lchild = nullptr;
+        t->rchild = nullptr;
+        t->height = 1;  // straight height from 1 owards instead of 0
+        return t;
+    }
+    if(key < p->data){
+        p->lchild = rInsert(p->lchild, key);
+    }else if(key > p->data){
+        p->rchild = rInsert(p->rchild, key);
+    }
+
+    // Update height
+    p->height = NodeHeight(p);
+
+    // Balance Factor and Rotation
+    if(BalanceFactor(p) == 2 && BalanceFactor(p) == 1){
+        return LLRotation(p);
+    }
+    else if(BalanceFactor(p) == 2 && BalanceFactor(p) == -1){
+        return LRRotation(p);
+    }
+    else if(BalanceFactor(p) == -2 && BalanceFactor(p) == -1){
+        return RRRotation(p);
+    }
+    else if(BalanceFactor(p) == -2 && BalanceFactor(p) == 1){
+        return RLRotation(p);
+    }
+    return p;
+}
+
+void AVL::Inorder(node* p){
+    if(p){
+        Inorder(p->lchild);
+        cout << p->data << ", " << flush;
+        Inorder(p->rchild);
+    }
+}
+
+int main(){
+    // LL Rotation
+    AVL tll;
+    tll.root = tll.rInsert(tll.root, 30);
+    tll.root = tll.rInsert(tll.root, 20);
+    tll.root = tll.rInsert(tll.root, 10);
+ 
+    tll.Inorder();
+    cout << endl;
+ 
+    // RR Rotation
+    AVL trr;
+    trr.root = trr.rInsert(trr.root, 10);
+    trr.root = trr.rInsert(trr.root, 20);
+    trr.root = trr.rInsert(trr.root, 30);
+ 
+    trr.Inorder();
+    cout << endl;
+}

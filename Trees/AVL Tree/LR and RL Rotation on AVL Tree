@@ -145,16 +145,13 @@ node* AVL::rInsert(node* p, int key){
     p->height = NodeHeight(p);
 
     // Balance Factor and Rotation
-    if(BalanceFactor(p) == 2 && BalanceFactor(p) == 1){
+    if (BalanceFactor(p) == 2 && BalanceFactor(p->lchild) == 1) {
         return LLRotation(p);
-    }
-    else if(BalanceFactor(p) == 2 && BalanceFactor(p) == -1){
+    } else if (BalanceFactor(p) == 2 && BalanceFactor(p->lchild) == -1){
         return LRRotation(p);
-    }
-    else if(BalanceFactor(p) == -2 && BalanceFactor(p) == -1){
+    } else if (BalanceFactor(p) == -2 && BalanceFactor(p->rchild) == -1){
         return RRRotation(p);
-    }
-    else if(BalanceFactor(p) == -2 && BalanceFactor(p) == 1){
+    } else if (BalanceFactor(p) == -2 && BalanceFactor(p->rchild) == 1){
         return RLRotation(p);
     }
     return p;

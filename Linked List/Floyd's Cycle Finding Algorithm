@@ -1,0 +1,21 @@
+bool has_cycle(SinglyLinkedListNode* head) {
+
+    SinglyLinkedListNode* ptr1 = head;
+    SinglyLinkedListNode* ptr2 = head;
+    int result = 0;
+    
+    while(ptr1 && ptr2){
+        ptr1 = ptr1->next;
+        ptr2 = ptr2->next;
+        
+        if(ptr2){
+            ptr2 = ptr2->next;
+        }
+        
+        if(ptr1 == ptr2){
+            result = 1;
+            break;
+        }
+    }
+    return result;
+}

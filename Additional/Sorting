@@ -1,0 +1,15 @@
+In case of two vectors:
+
+--> Sorting based on the first element of each inner vector.
+
+    sort(points.begin(), points.end())
+
+
+
+--> If you want to sort based on a different element of the inner vector (e.g., the second element), 
+    you would need to provide a custom comparator to std::sort. For instance:
+
+    std::sort(points.begin(), points.end(), [](const std::vector<int>& a, const std::vector<int>& b) {
+        return a[1] < b[1];
+    });
+

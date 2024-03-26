@@ -13,3 +13,6 @@ In case of two vectors:
         return a[1] < b[1];
     });
 
+
+    // Sorting Vector in descending order
+    sort(list.begin(), list.end(), greater<int>());
